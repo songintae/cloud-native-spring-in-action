@@ -7,7 +7,12 @@ metadata:
     app: catalog-service
 
 spec:
-  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25% # 최대 몇 개의 Pod를 새로 생성할 수 있는가? (개수로도 가능), 소수점일 때 올림
+      maxUnavailable: 0 #최대 몇 개의 Pod를 동시에 종료할 수 있는가? (개수로도 가능), 소수점일 때 내림
+  replicas: 3
   selector:
     matchLabels:
       app: catalog-service
@@ -19,6 +24,31 @@ spec:
       containers:
         - name: catalog-server
           image: catalog-service:latest
+          ##Startup Probe: 앱이 최초로 구동될 때까지만 작동 (가장 먼저 실행)
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            failureThreshold: 15
+            periodSeconds: 10
+          # Readiness Probe: 트래픽 투입 결정 (Startup 성공 후 시작)
+          # 앱이 뜨고 나서 DB 연동 등 실제 서비스가 가능한지 확인
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5  # Startup 완료 직후이므로 길게 잡을 필요 없음
+            periodSeconds: 10       # 10초마다 체크
+            failureThreshold: 3     # 3번 실패 시 서비스 엔드포인트에서 제외
+          # Liveness Probe: 컨테이너 생존 확인 (Startup 성공 후 시작)
+          # 프로세스 데드락 등 치명적 상황에서만 재시작하도록 약간 여유 있게 설정
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 20       # 너무 자주 체크해서 부하를 주지 않음
+            failureThreshold: 5     # 5번 연속 실패 시 컨테이너 재시작
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080

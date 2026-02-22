@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: catalog-service
+
+server:
+  tomcat:
+    connection-timeout: 2s
+    keep-alive-timeout: 65s # [??] Client - Load Balancer(L/B) - Web Server ???? L/B ???? < Web Server ???? ????? ??
+    threads:
+      max: 200 # [??] nginx ? ?? proxy? ??? worker thread? ??????
+      min-spare: 10
+    mbeanregistry: #[??] JMX(Java Management Extensions)? MBean (Managed Bean)? ?? ?? Metric ?? (TomcatMetricsBinder)
+      enabled: true

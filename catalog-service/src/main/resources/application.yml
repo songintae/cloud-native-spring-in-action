@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: catalog-service
+
+server:
+  tomcat:
+    connection-timeout: 2s
+    keep-alive-timeout: 65s # [실무] Client - Load Balancer(L/B) - Web Server 구조에서 L/B 타임아웃 < Web Server 타임아웃으로 설정해야 커넥션으로 인한 Timeout 을 방지할 수 있다.
+    threads:
+      max: 200 # [실무] nginx 등 리버스 proxy를 사용할 경우 worker thread를 고려하여 설정필요
+      min-spare: 10
+    mbeanregistry: #[실무] JMX(Java Management Extensions)의 MBean (Managed Bean)을 등록 하여 Metric 수집 (TomcatMetricsBinder)
+      enabled: true

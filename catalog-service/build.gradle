@@ -22,6 +22,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
     // Lombok - 보일러플레이트 코드 제거
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
@@ -38,4 +40,8 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+bootRun{
+    systemProperty 'spring.profiles.active', 'testdata'
 }

@@ -11,3 +11,5 @@ server:
       min-spare: 10
     mbeanregistry: #[실무] JMX(Java Management Extensions)의 MBean (Managed Bean)을 등록 하여 Metric 수집 (TomcatMetricsBinder)
       enabled: true
+polar:
+  greeting: Welcome to the local book catalog!

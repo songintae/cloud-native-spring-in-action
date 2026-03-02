@@ -1,6 +1,22 @@
 spring:
   application:
     name: catalog-service
+  config:
+    import: "optional:configserver:"
+  cloud:
+    config:
+      uri: http://localhost:8888
+      # 내결함성을 위한 설정 추가
+      request-connect-timeout: 2000
+      request-read-timeout: 5000
+      fail-fast: true
+      retry:
+        initial-interval: 1000
+        max-attempts: 6
+        max-interval: 2000
+        multiplier: 1.1
+
+
 
 server:
   tomcat:
@@ -11,5 +27,11 @@ server:
       min-spare: 10
     mbeanregistry: #[실무] JMX(Java Management Extensions)의 MBean (Managed Bean)을 등록 하여 Metric 수집 (TomcatMetricsBinder)
       enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh
+
 polar:
   greeting: Welcome to the local book catalog!

@@ -18,9 +18,16 @@ repositories {
     mavenCentral()
 }
 
+ext {
+    set('springCloudVersion', "2025.1.0")
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+    implementation 'org.springframework.retry:spring-retry'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator' //12 요소 중 관리 프로세스를 구현한 Spring Actuator 추가
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
@@ -36,6 +43,13 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
     testImplementation 'org.springframework.boot:spring-boot-webtestclient'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+dependencyManagement {
+    imports {
+        //스프링 클라우드 의존성은 별도로 관리
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
 
 tasks.named('test') {

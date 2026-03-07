@@ -1,0 +1,9 @@
+# 모든 서비스 공통 Git 속성
+/gradlew text eol=lf
+*.bat text eol=crlf
+*.jar binary
+
+# [실무] 한글 인코딩 깨짐 방지 — Git이 자동 판단 못하는 경우 명시적으로 UTF-8 지정
+*.yml text working-tree-encoding=UTF-8
+*.yaml text working-tree-encoding=UTF-8
+*.properties text working-tree-encoding=UTF-8

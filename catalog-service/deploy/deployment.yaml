@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 
 metadata:
-  name: catalog-server-deployment
+  name: catalog-service
   labels:
     app: catalog-service
 
@@ -22,8 +22,11 @@ spec:
         app: catalog-service
     spec:
       containers:
-        - name: catalog-server
+        - name: catalog-service
           image: catalog-service:latest
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: k8s
           ##Startup Probe: 앱이 최초로 구동될 때까지만 작동 (가장 먼저 실행)
           startupProbe:
             httpGet:

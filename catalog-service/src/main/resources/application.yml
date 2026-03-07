@@ -35,3 +35,13 @@ management:
 
 polar:
   greeting: Welcome to the local book catalog!
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: k8s
+  cloud:
+    config:
+      uri: http://config-service:8888

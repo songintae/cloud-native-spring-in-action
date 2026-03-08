@@ -39,6 +39,7 @@ Spring Framework의 내부 동작 원리와 설계 철학을 깊이 이해하고
 
 ## 카테고리 결정
 주제에 따라 적절한 하위 디렉토리를 선택한다:
+- `reference/spring-core/` — ApplicationContext, Bean 라이프사이클, ConfigurationProperties, 프로파일, SpEL
 - `reference/spring-mvc/` — DispatcherServlet, 컨트롤러, 필터, 인터셉터, 검증
 - `reference/spring-data/` — JPA, JDBC, 트랜잭션, 리포지토리
 - `reference/spring-cloud/` — Config Server, Service Discovery, Gateway
@@ -52,7 +53,7 @@ Spring Framework의 내부 동작 원리와 설계 철학을 깊이 이해하고
 
 ## 문서 템플릿
 
-기존 reference/ 문서(DispatcherServlet.md, Valid.md, HATEOAS.md)의 깊이와 스타일을 참고한다.
+작성 전에 기존 reference/ 문서 중 하나(예: `reference/spring-core/ConfigurationProperties.md`)를 읽어서 깊이, 스타일, ASCII 다이어그램 활용 방식을 파악한 뒤 동일한 수준으로 작성한다.
 
 ```
 # {주제명}

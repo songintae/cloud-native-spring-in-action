@@ -18,22 +18,11 @@
 - 관측성(Observability): 로깅, 메트릭, 트레이싱
 - 복원력(Resilience): 서킷 브레이커, 재시도, 타임아웃
 
-## 코드 컨벤션
-- Java 17, Spring Boot 4.0.2, Gradle
-- record 기반 도메인 모델 (불변 객체)
-- Lombok 사용 (빌더, 로깅 등 보일러플레이트 제거)
-- 레이어 구조: `web` → `domain` → `persistence`
-- 패키지 구조: `com.polarbookshop.{서비스명}.{레이어}`
-
-## 주석 패턴
-- `[실무노트]`: Java/Kotlin 코드 내 실무 관점 주석
-- `[실무]`: application.yml 등 설정 파일 내 주석
-
-## 테스트 컨벤션
-- `@WebMvcTest`: 웹 레이어 슬라이스 테스트
-- `@SpringBootTest`: 통합 테스트
-- `@MockitoBean`: 의존성 모킹
-- 테스트 메서드명: `한글_설명_스타일()` 또는 `shouldDoSomething_whenCondition()`
+## 서비스 구조
+- 각 서비스는 독립 Gradle 프로젝트 (모노레포 내)
+- 현재: `catalog-service`
+- 향후: `order-service`, `edge-service`, `config-service` 등
+- 공통 구조: `src/`, `build.gradle`, `Dockerfile`, `deploy/` (K8s 매니페스트)
 
 ## reference/ 디렉토리 규칙
 - 카테고리별 하위 디렉토리로 분류:
@@ -42,8 +31,4 @@
   - `container/`, `kubernetes/`
 - 파일명: PascalCase (예: `DispatcherServlet.md`, `CircuitBreaker.md`)
 
-## 서비스 구조
-- 각 서비스는 독립 Gradle 프로젝트 (모노레포 내)
-- 현재: `catalog-service`
-- 향후: `order-service`, `edge-service`, `config-service` 등
-- 공통 구조: `src/`, `build.gradle`, `Dockerfile`, `deploy/` (K8s 매니페스트)
+> 파일 타입별 세부 규칙은 `.claude/rules/`에서 조건부로 로드된다.

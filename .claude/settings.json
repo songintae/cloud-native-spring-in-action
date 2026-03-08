@@ -2,5 +2,48 @@
   "enabledPlugins": {
     "clarify@team-attention-plugins": true,
     "session-wrap@team-attention-plugins": true
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/protect-files.sh"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Read",
+      "Grep",
+      "Glob",
+      "Bash(./gradlew *)",
+      "Bash(gradle *)",
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git branch *)",
+      "Bash(docker build *)",
+      "Bash(docker compose *)",
+      "Bash(kubectl get *)",
+      "Bash(kubectl describe *)",
+      "Bash(ls *)",
+      "Bash(cat *)",
+      "Bash(mkdir *)",
+      "Bash(java *)",
+      "Bash(http *)"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(git push --force *)",
+      "Bash(git push origin main *)",
+      "Bash(DROP TABLE *)",
+      "Bash(curl * | bash)",
+      "Bash(chmod 777 *)"
+    ]
   }
 }

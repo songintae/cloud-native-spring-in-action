@@ -20,6 +20,7 @@ repositories {
 
 ext {
     set('springCloudVersion', "2025.1.0")
+    set('testcontainersVersion', "2.0.3")
 }
 
 dependencies {
@@ -28,6 +29,12 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-config'
     implementation 'org.springframework.retry:spring-retry'
     implementation 'org.springframework.boot:spring-boot-starter-actuator' //12 요소 중 관리 프로세스를 구현한 Spring Actuator 추가
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+    runtimeOnly 'org.postgresql:postgresql'
+
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-database-postgresql' //Database에 따른 설정 추가 필요
+    implementation 'org.springframework.boot:spring-boot-starter-flyway' //flyway starter를 등록해야 동작
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
@@ -39,9 +46,11 @@ dependencies {
 
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-data-jdbc-test' //Spring Boot 4.x 부터는 모듈화에 따라 의존방식 설정이 더 정교화해짐
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
     testImplementation 'org.springframework.boot:spring-boot-webtestclient'
+    testImplementation 'org.testcontainers:testcontainers-postgresql'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
@@ -49,6 +58,7 @@ dependencyManagement {
     imports {
         //스프링 클라우드 의존성은 별도로 관리
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
     }
 }
 

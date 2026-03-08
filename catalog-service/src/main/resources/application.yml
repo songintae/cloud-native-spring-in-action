@@ -9,12 +9,39 @@ spring:
       # 내결함성을 위한 설정 추가
       request-connect-timeout: 2000
       request-read-timeout: 5000
-      fail-fast: true
+      fail-fast: false
       retry:
         initial-interval: 1000
         max-attempts: 6
         max-interval: 2000
         multiplier: 1.1
+  datasource:
+    url: jdbc:postgresql://localhost:5432/polardb_catalog
+    username: user
+    password: password
+    hikari:
+      # [실무] 풀 사이즈 공식: connections = (core_count * 2) + effective_spindle_count
+      maximum-pool-size: 5
+      # [실무] minimum-idle을 maximum-pool-size와 같게 설정하면
+      # 커넥션 생성/제거 오버헤드 없이 고정 풀로 동작한다 (HikariCP 공식 권장)
+      minimum-idle: 5
+      # [실무] 풀에서 커넥션을 못 얻으면 2초 후 SQLException 발생
+      # 너무 길면 스레드가 블로킹되고, 너무 짧으면 순간 부하에 취약
+      connection-timeout: 2000
+      # [실무] DB의 wait_timeout보다 최소 5초 짧게 설정 (HikariCP 공식 권장)
+      # 네트워크 지연/GC pause로 인한 race condition 방지
+      # Aurora 사용 시 failover 복구 속도를 고려하여 10~15분으로 줄이는 것을 권장
+      max-lifetime: 1800000  # 30분 (로컬/학습 환경 기본값)
+      # [실무] 유휴 커넥션이 이 시간 이상 놀면 풀에서 제거
+      # minimum-idle == maximum-pool-size면 이 설정은 무시됨
+      idle-timeout: 600000  # 10분
+      # [실무] 커넥션 획득 후 이 시간 안에 반환하지 않으면 로그 경고
+      # 느린 쿼리나 커넥션 누수를 조기에 발견할 수 있다
+      leak-detection-threshold: 60000  # 1분
+      # [실무] 커넥션이 유효한지 확인하는 쿼리 대신 JDBC4 isValid() 사용
+      # PostgreSQL 드라이버는 JDBC4를 지원하므로 별도 validation-query 불필요
+      # connection-test-query는 설정하지 않는 것이 HikariCP 권장사항
+
 
 
 
@@ -45,3 +72,4 @@ spring:
   cloud:
     config:
       uri: http://config-service:8888
+      fail-fast: true
